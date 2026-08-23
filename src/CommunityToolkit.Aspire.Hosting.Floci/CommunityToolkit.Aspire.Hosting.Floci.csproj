@@ -1,6 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>Habichuelo.Aspire.Hosting.Floci</PackageId>
+    <Authors>Omar Rivero</Authors>
+    <Company>Habichuelo</Company>
+    <Product>Habichuelo.Aspire</Product>
+    <PackageProjectUrl>https://github.com/0mar-rivero/Aspire</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/0mar-rivero/Aspire.git</RepositoryUrl>
     <Description>An Aspire hosting integration for the Floci local cloud emulators: AddFlociAws (AWS), AddFlociAzure (Azure) and AddFlociGcp (GCP). Includes a WithFlociUI() extension for running the Floci UI web console alongside one or more emulators.</Description>
     <AdditionalPackageTags>floci aws azure gcp localstack azurite emulator hosting ui tls</AdditionalPackageTags>
     <!-- Aspire's certificate configuration surface (WithHttpsCertificateConfiguration,

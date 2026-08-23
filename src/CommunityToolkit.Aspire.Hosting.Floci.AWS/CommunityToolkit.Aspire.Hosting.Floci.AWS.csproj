@@ -1,6 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <PackageId>Habichuelo.Aspire.Hosting.Floci.AWS</PackageId>
+    <Authors>Omar Rivero</Authors>
+    <Company>Habichuelo</Company>
+    <Product>Habichuelo.Aspire</Product>
+    <PackageProjectUrl>https://github.com/0mar-rivero/Aspire/tree/personal/habichuelo-floci-packaging</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/0mar-rivero/Aspire.git</RepositoryUrl>
     <Description>An Aspire hosting integration that routes AWS CloudFormation and CDK resources through the Floci local AWS emulator.</Description>
     <AdditionalPackageTags>floci aws cloudformation cdk emulator hosting</AdditionalPackageTags>
     <IsAspirePolyglotCompatible>false</IsAspirePolyglotCompatible>

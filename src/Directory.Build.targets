@@ -2,15 +2,15 @@
   <Import Project="..\Directory.Build.targets" />
 
   <PropertyGroup>
-    <Authors>Microsoft.Toolkit,dotnetfoundation,Community Toolkit</Authors>
-    <Company>.NET Foundation</Company>
+    <Authors Condition="'$(Authors)' == ''">Microsoft.Toolkit,dotnetfoundation,Community Toolkit</Authors>
+    <Company Condition="'$(Company)' == ''">.NET Foundation</Company>
     <Copyright>(c) .NET Foundation and Contributors. All rights reserved.</Copyright>
     <NeutralLanguage>en</NeutralLanguage>
-    <Product>CommunityToolkit.Aspire</Product>
+    <Product Condition="'$(Product)' == ''">CommunityToolkit.Aspire</Product>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/CommunityToolkit/Aspire</PackageProjectUrl>
+    <PackageProjectUrl Condition="'$(PackageProjectUrl)' == ''">https://github.com/CommunityToolkit/Aspire</PackageProjectUrl>
     <PackageIcon>nuget.png</PackageIcon>
-    <RepositoryUrl>https://github.com/CommunityToolkit/Aspire</RepositoryUrl>
+    <RepositoryUrl Condition="'$(RepositoryUrl)' == ''">https://github.com/CommunityToolkit/Aspire</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
