@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>An Aspire hosting integration that routes AWS CloudFormation and CDK resources through the Floci local AWS emulator.</Description>
+    <AdditionalPackageTags>floci aws cloudformation cdk emulator hosting</AdditionalPackageTags>
+    <IsAspirePolyglotCompatible>false</IsAspirePolyglotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommunityToolkit.Aspire.Hosting.Floci\CommunityToolkit.Aspire.Hosting.Floci.csproj" />
+    <PackageReference Include="Aspire.Hosting.AWS" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CommunityToolkit.Aspire.Hosting.Floci.AWS.Tests" />
+  </ItemGroup>
+
+</Project>
