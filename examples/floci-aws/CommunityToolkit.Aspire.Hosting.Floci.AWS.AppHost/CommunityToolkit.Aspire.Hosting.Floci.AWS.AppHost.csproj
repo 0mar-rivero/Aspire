@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\CommunityToolkit.Aspire.Hosting.Floci\CommunityToolkit.Aspire.Hosting.Floci.csproj" IsAspireProjectResource="false" />
     <ProjectReference Include="..\..\..\src\CommunityToolkit.Aspire.Hosting.Floci.AWS\CommunityToolkit.Aspire.Hosting.Floci.AWS.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 </Project>

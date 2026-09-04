@@ -13,9 +13,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommunityToolkit.Aspire.Hosting.Floci\CommunityToolkit.Aspire.Hosting.Floci.csproj" />
-    <PackageReference Include="Aspire.Hosting.AWS" />
+    <ProjectReference Include="..\CommunityToolkit.Aspire.Hosting.Floci\CommunityToolkit.Aspire.Hosting.Floci.csproj" PrivateAssets="all" />
+    <PackageReference Include="Habichuelo.Aspire.Hosting.Aws" />
   </ItemGroup>
+
+  <Target Name="IncludePrivateProjectReferencesInPackage" BeforeTargets="_GetBuildOutputFilesWithTfm" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
 
   <ItemGroup>
     <InternalsVisibleTo Include="CommunityToolkit.Aspire.Hosting.Floci.AWS.Tests" />

@@ -15,7 +15,6 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$baseProject = Join-Path $repoRoot 'src\CommunityToolkit.Aspire.Hosting.Floci\CommunityToolkit.Aspire.Hosting.Floci.csproj'
 $awsProject = Join-Path $repoRoot 'src\CommunityToolkit.Aspire.Hosting.Floci.AWS\CommunityToolkit.Aspire.Hosting.Floci.AWS.csproj'
 $testProject = Join-Path $repoRoot 'tests\CommunityToolkit.Aspire.Hosting.Floci.AWS.Tests\CommunityToolkit.Aspire.Hosting.Floci.AWS.Tests.csproj'
 
@@ -46,20 +45,14 @@ Invoke-DotNet @(
     '--configuration', 'Release'
 )
 
-foreach ($project in @($baseProject, $awsProject))
-{
-    Invoke-DotNet @(
-        'pack', $project,
-        '--configuration', 'Release',
-        '--output', $OutputPath,
-        "-p:PackageVersion=$Version"
-    )
-}
-
-$packages = @(
-    Join-Path $OutputPath "Habichuelo.Aspire.Hosting.Floci.$Version.nupkg"
-    Join-Path $OutputPath "Habichuelo.Aspire.Hosting.Floci.AWS.$Version.nupkg"
+Invoke-DotNet @(
+    'pack', $awsProject,
+    '--configuration', 'Release',
+    '--output', $OutputPath,
+    "-p:PackageVersion=$Version"
 )
+
+$packages = @(Join-Path $OutputPath "Habichuelo.Aspire.Hosting.Floci.AWS.$Version.nupkg")
 
 foreach ($package in $packages)
 {

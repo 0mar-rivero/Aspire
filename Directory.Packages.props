@@ -5,7 +5,7 @@
   <ItemGroup Label="Aspire Packages">
     <!-- Aspire packages -->
     <PackageVersion Include="Aspire.Hosting" Version="$(AspireVersion)" />
-    <PackageVersion Include="Aspire.Hosting.AWS" Version="13.6.0" />
+    <PackageVersion Include="Habichuelo.Aspire.Hosting.Aws" Version="13.7.2-habichuelo.1" />
     <PackageVersion Include="Aspire.Confluent.Kafka" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.Docker" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.Kubernetes" Version="$(AspireVersion)$(AspirePreviewSuffix)" />
