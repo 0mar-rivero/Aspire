@@ -19,6 +19,38 @@ This package extends the Floci AWS resource from `CommunityToolkit.Aspire.Hostin
 
 The same reference works for imported stacks created with `AddAWSCloudFormationStack`. CloudFormation and CDK integration is currently C#-only, matching the API surface exposed by `Habichuelo.Aspire.Hosting.Aws`.
 
+## Deploying an AWS CDK environment to Floci
+
+An `AWSCDKEnvironmentResource` normally invokes the CDK CLI against AWS. Use
+`WithFlociDeploymentTarget` to scope the deploy and destroy steps to a running Floci endpoint:
+
+```csharp
+builder.AddAWSCDKEnvironment(
+        "my-app",
+        CDKDefaultsProviderFactory.Preview_V1)
+    .WithFlociDeploymentTarget(
+        new Uri("http://localhost:4566"),
+        new FlociAwsOptions
+        {
+            Region = "us-east-1",
+            AccessKeyId = "test",
+            SecretAccessKey = "test"
+        });
+```
+
+The endpoint is deliberately explicit because deployment runs outside normal resource orchestration;
+this helper does not start or own a Floci resource. Start Floci first, then invoke deployment:
+
+```text
+aspire start
+aspire deploy
+```
+
+This is an existing-target deployer: it does not start or own the Floci process. The helper applies
+the Floci endpoint, region, and placeholder credentials only while the CDK deploy or destroy action
+runs, then restores the AppHost process environment. Publish remains local CDK synthesis and does
+not contact Floci.
+
 The AWS SDK clients used internally by CDK for STS and S3 asset uploads are configured process-wide. Use one Floci endpoint for CDK deployment per AppHost; overlapping CDK deployments targeting different Floci endpoints, or mixing Floci-backed and real-AWS CDK deployments in the same AppHost, are not supported.
 
 Configure the emulator with the existing Floci extensions when needed:

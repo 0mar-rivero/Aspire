@@ -8,3 +8,10 @@ internal sealed class FlociEnabledAnnotation(FlociAwsContainerResource floci) : 
 }
 
 internal sealed class FlociPropagationAnnotation : IResourceAnnotation;
+
+internal sealed record FlociDeploymentTargetAnnotation(
+    Uri Endpoint,
+    FlociAwsOptions Options) : IResourceAnnotation
+{
+    internal IReadOnlyDictionary<string, string?>? PreviousEnvironment { get; set; }
+}
