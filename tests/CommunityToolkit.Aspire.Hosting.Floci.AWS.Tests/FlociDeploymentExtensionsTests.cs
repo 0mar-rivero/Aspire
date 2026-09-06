@@ -1,3 +1,4 @@
+using Amazon;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.AWS.Deployment;
@@ -14,6 +15,33 @@ namespace CommunityToolkit.Aspire.Hosting.Floci.AWS.Tests;
 [Collection(nameof(FlociDeploymentEnvironmentCollection))]
 public sealed class FlociDeploymentExtensionsTests
 {
+    [Fact]
+    public void DeploymentStackCanRunLocallyAndDeployToExplicitFlociEndpoint()
+    {
+        var builder = DistributedApplication.CreateBuilder();
+        var aws = builder.AddAWSSDKConfig()
+            .WithRegion(RegionEndpoint.USEast1)
+            .WithSdkValidation(false);
+        var floci = builder.AddFlociAws("floci", port: 4566, defaultRegion: "us-east-1");
+        var environment = builder.AddAWSCDKEnvironment(
+                "aws",
+                CDKDefaultsProviderFactory.Preview_V1,
+                environmentResourceConfig: new AWSCDKEnvironmentResourceConfig { AWSSDKConfig = aws })
+            .WithFlociDeploymentTarget(new Uri("http://localhost:4566"));
+
+        var stack = environment.UseDeploymentStack("aws")
+            .WithReference(aws)
+            .WithReference(floci);
+        stack.AddSQSQueue("orders");
+
+        using var app = builder.Build();
+        var model = app.Services.GetRequiredService<DistributedApplicationModel>();
+
+        Assert.Contains(model.Resources, resource => resource.Name == "aws-stack");
+        Assert.Contains(model.Resources, resource => resource.Name == "orders");
+        Assert.Single(environment.Resource.Annotations.OfType<FlociDeploymentTargetAnnotation>());
+    }
+
     [Fact]
     public async Task ExplicitEndpointScopesFlociEnvironmentToDeployAndDestroy()
     {

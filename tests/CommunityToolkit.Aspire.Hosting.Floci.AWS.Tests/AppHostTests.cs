@@ -18,7 +18,7 @@ public sealed class AppHostTests(AspireIntegrationTestFixture<Projects.Community
         timeout.CancelAfter(TimeSpan.FromMinutes(5));
 
         await fixture.ResourceNotificationService
-            .WaitForResourceAsync("queue-stack", KnownResourceStates.Running, timeout.Token);
+            .WaitForResourceAsync("deployment-stack", KnownResourceStates.Running, timeout.Token);
 
         var endpoint = await fixture.App.GetConnectionStringAsync("floci", cancellationToken: timeout.Token);
         Assert.NotNull(endpoint);

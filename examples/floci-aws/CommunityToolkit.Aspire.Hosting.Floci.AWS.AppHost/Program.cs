@@ -6,13 +6,18 @@ using Aspire.Hosting.AWS.Deployment;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-var aws = builder.AddAWSSDKConfig().WithRegion(RegionEndpoint.USEast1);
+var aws = builder.AddAWSSDKConfig()
+    .WithRegion(RegionEndpoint.USEast1)
+    .WithSdkValidation(false);
 var floci = builder.AddFlociAws("floci", port: 4566, defaultRegion: "us-east-1");
 
-builder.AddAWSCDKEnvironment("deployment", CDKDefaultsProviderFactory.Preview_V1)
+var deployment = builder.AddAWSCDKEnvironment(
+        "deployment",
+        CDKDefaultsProviderFactory.Preview_V1,
+        environmentResourceConfig: new AWSCDKEnvironmentResourceConfig { AWSSDKConfig = aws })
     .WithFlociDeploymentTarget(new Uri("http://localhost:4566"));
 
-var stack = builder.AddAWSCDKStack("queue-stack")
+var stack = deployment.UseDeploymentStack("deployment")
     .WithReference(aws)
     .WithReference(floci);
 

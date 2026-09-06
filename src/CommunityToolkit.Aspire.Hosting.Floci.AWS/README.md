@@ -5,7 +5,9 @@ An Aspire hosting integration that routes the `Habichuelo.Aspire.Hosting.Aws` Cl
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 
-var aws = builder.AddAWSSDKConfig().WithRegion(RegionEndpoint.USEast1);
+var aws = builder.AddAWSSDKConfig()
+    .WithRegion(RegionEndpoint.USEast1)
+    .WithSdkValidation(false);
 var floci = builder.AddFlociAws("floci", defaultRegion: "us-east-1");
 
 builder.AddAWSCloudFormationTemplate("resources", "resources.yaml")
@@ -25,9 +27,15 @@ An `AWSCDKEnvironmentResource` normally invokes the CDK CLI against AWS. Use
 `WithFlociDeploymentTarget` to scope the deploy and destroy steps to a running Floci endpoint:
 
 ```csharp
-builder.AddAWSCDKEnvironment(
+var aws = builder.AddAWSSDKConfig()
+    .WithRegion(RegionEndpoint.USEast1)
+    .WithSdkValidation(false);
+var floci = builder.AddFlociAws("floci", port: 4566, defaultRegion: "us-east-1");
+
+var deployment = builder.AddAWSCDKEnvironment(
         "my-app",
-        CDKDefaultsProviderFactory.Preview_V1)
+        CDKDefaultsProviderFactory.Preview_V1,
+        environmentResourceConfig: new AWSCDKEnvironmentResourceConfig { AWSSDKConfig = aws })
     .WithFlociDeploymentTarget(
         new Uri("http://localhost:4566"),
         new FlociAwsOptions
@@ -36,7 +44,19 @@ builder.AddAWSCDKEnvironment(
             AccessKeyId = "test",
             SecretAccessKey = "test"
         });
+
+var stack = deployment.UseDeploymentStack("my-app")
+    .WithReference(aws)
+    .WithReference(floci);
+
+stack.AddSQSQueue("orders");
 ```
+
+`UseDeploymentStack` keeps the constructs added through the stack APIs in the CDK environment's
+deployment stack. The companion stack resource runs the same construct graph locally against Floci,
+while `WithFlociDeploymentTarget` redirects CDK deployment to the explicit emulator URL.
+The explicit run stack name matches the deployment stack name because the two stacks live at
+different endpoints, so they cannot collide.
 
 The endpoint is deliberately explicit because deployment runs outside normal resource orchestration;
 this helper does not start or own a Floci resource. Start Floci first, then invoke deployment:
